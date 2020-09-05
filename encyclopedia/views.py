@@ -7,7 +7,7 @@ from . import util
 
 class NewPageForm(forms.Form):
     page_title = forms.CharField(label="Page Title")
-    page_body = forms.Textarea()
+    page_body = forms.CharField(label="Page Body", widget=forms.Textarea)
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
