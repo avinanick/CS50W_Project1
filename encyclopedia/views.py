@@ -23,10 +23,10 @@ def edit_page(request, title):
         return render(request, "encyclopedia/error.html", {
             "entry_title": title
         })
-    form = EditPageForm()
-    form["page_body"] = markdown_content
+    form = EditPageForm({"page_body": markdown_content})
     return render(request, "encyclopedia/edit_page.html", {
-        "form": form
+        "form": form,
+        "entry_title": title
     })
 
 def entry(request, title):
