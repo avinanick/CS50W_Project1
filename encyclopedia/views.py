@@ -1,13 +1,14 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.shortcuts import reverse
 from django.shortcuts import redirect
 import markdown2
-
-from django.http import HttpResponse
+from django import forms
 
 from . import util
 
+class NewPageForm(forms.Form):
+    page_title = forms.CharField(label="Page Title")
+    page_body = forms.Textarea()
+    page_submit = forms.
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
@@ -26,6 +27,11 @@ def entry(request, title):
         "entry_body": html_content
     })
 
+def new_page(request):
+    return render(request, "encyclopedia/create_page.html", {
+        "form": NewPageForm()
+    })
+
 def search(request):
     if request.method == "POST":
         search_request = request.POST['q']
@@ -33,4 +39,7 @@ def search(request):
         if entry_match:
             return redirect('entry', title=search_request)
         all_entries = util.list_entries()
-        return HttpResponse(search_request)
+        partial_matches = [i for i in all_entries if search_request in i]
+        return render(request, "encyclopedia/search_results.html", {
+            "entries": partial_matches
+        })
