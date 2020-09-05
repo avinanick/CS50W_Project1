@@ -8,7 +8,9 @@
     <h1>Create New Page</h1>
 
     {% if name_error %}
-    <p class="error">Error: page already exists!</p>
+    <div class="error" style="color:red;">
+        Error: page already exists!
+    </div>
     {% endif %}
     <form action="{% url 'new_page' %}" method="POST">
         {% csrf_token %}
