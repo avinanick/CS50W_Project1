@@ -27,6 +27,14 @@ def entry(request, title):
     })
 
 def new_page(request):
+    if request.method == "POST":
+        form = NewPageForm(request.POST)
+        if form.is_valid:
+            page_clash = util.get_entry(form.cleaned_data["page_title"])
+            if not page_clash:
+                util.save_entry(form.cleaned_data["page_title"], form.cleaned_data["page_body"])
+                return redirect('entry', title=form.cleaned_data["page_title"])
+            return # STUB: RETURN TO PAGE WITH ERROR
     return render(request, "encyclopedia/create_page.html", {
         "form": NewPageForm()
     })
