@@ -9,9 +9,24 @@ class NewPageForm(forms.Form):
     page_title = forms.CharField(label="Page Title")
     page_body = forms.CharField(label="Page Body", widget=forms.Textarea)
 
+class EditPageForm(forms.Form):
+    page_body = forms.CharField(label="Page Body", widget=forms.Textarea)
+
 def index(request):
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()
+    })
+
+def edit_page(request, title):
+    markdown_content = util.get_entry(title)
+    if not markdown_content:
+        return render(request, "encyclopedia/error.html", {
+            "entry_title": title
+        })
+    form = EditPageForm()
+    form["page_body"] = markdown_content
+    return render(request, "encyclopedia/edit_page.html", {
+        "form": form
     })
 
 def entry(request, title):
