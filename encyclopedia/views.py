@@ -8,7 +8,6 @@ from . import util
 class NewPageForm(forms.Form):
     page_title = forms.CharField(label="Page Title")
     page_body = forms.Textarea()
-    page_submit = forms.
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
